@@ -76,6 +76,7 @@ int prepare(NSMutableString *objC, NSStringEncoding encoding, int argc, const ch
     [objC insertString:progName atIndex:0];
     [objC insertString:MAIN_OPEN atIndex:0];
     [objC insertString:IMPORT_COCOA atIndex:0];
+    [objC insertString:IMPORT_ATOZ atIndex:0];
     [objC appendString:MAIN_CLOSE];
 
     //preprocess it by replacing calls to shell (in backtickes) with calls to RunTask

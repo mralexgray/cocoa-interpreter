@@ -8,6 +8,7 @@
 #define INTERPRETER_ARGS_COUNT 2
 
 #define IMPORT_COCOA @"#import <Cocoa/Cocoa.h>\n"
+#define IMPORT_ATOZ @"#import <AtoZ/AtoZ.h>\n"
 
 #define MAIN_OPEN @"\nint main(int argc, const char * argv[]) { @autoreleasepool {\n"
 #define MAIN_CLOSE @"\n} return 0; }"
