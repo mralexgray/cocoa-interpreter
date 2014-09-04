@@ -10,8 +10,8 @@ typedef enum _DDChecksumType {
     /*...any CC algo can be used*/
 } DDChecksumType;
 
-@interface DDChecksum : NSObject
+@interface NSData (DDChecksum)
 
-+ (NSString *)checksum:(DDChecksumType)type forData:(NSData*)data;
+- (NSString*)checksum:(DDChecksumType)type;
 
 @end

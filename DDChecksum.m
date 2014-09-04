@@ -5,50 +5,24 @@
 #import "DDChecksum.h"
 #import <CommonCrypto/CommonDigest.h>
 
-@implementation DDChecksum
+@implementation NSData (DDChecksum)
 
 #pragma mark sha
 
-+ (NSString *)hexForDigest:(unsigned char*)ret ofLength:(int)l
-{
-	if(ret && l>0) 
-	{
-        NSMutableString* output = [NSMutableString stringWithCapacity:l * 2];
-        
-        for(int i = 0; i < l; i++)
-            [output appendFormat:@"%02x", ret[i]];
-        
-        return output;
-	}	
-	return nil;
++ (NSString *)hexForDigest:(unsigned char*)ret ofLength:(int)l {         NSMutableString* output = NSMutableString.new;  //stringWithCapacity:l * 2];
+
+	if(!ret || l <= 0) return nil; for(int i = 0; i < l; i++) [output appendFormat:@"%02x", ret[i]];
+  return output;
 }
 
-+ (NSString *)checksum:(DDChecksumType)type forData:(NSData *)data
-{
-    unsigned char *ret = nil;
-    int l = 0;
-    
-    switch (type) {
-        case DDChecksumTypeSha512: 
-        {
-            l = CC_SHA512_DIGEST_LENGTH;
-            unsigned char digest[CC_SHA512_DIGEST_LENGTH];
-            ret = CC_SHA512([data bytes], (CC_LONG)[data length], digest);
-            break;
-        }
-            
-        case DDChecksumTypeMD5:
-        {
-            l = CC_MD5_DIGEST_LENGTH;
-            unsigned char digest[CC_MD5_DIGEST_LENGTH];
-            ret = CC_MD5([data bytes], (CC_LONG)[data length], digest);        
-        }
-            
-        default:
-            break;
-    }
-    
-	return [self hexForDigest:ret ofLength:l];
+
+- (NSString*)checksum:(DDChecksumType)type {
+
+
+  int              l = type == DDChecksumTypeSha512 ? CC_SHA512_DIGEST_LENGTH : CC_MD5_DIGEST_LENGTH;    // DDChecksumTypeMD5
+  unsigned char digest[type == DDChecksumTypeSha512 ? CC_SHA512_DIGEST_LENGTH : CC_MD5_DIGEST_LENGTH];
+  return [self.class hexForDigest:type == DDChecksumTypeSha512 ? CC_SHA512(self.bytes, (CC_LONG)self.length, digest)
+                                   /* unsigned char *ret */    : CC_MD5   (self.bytes, (CC_LONG)self.length, digest) ofLength:l];
 }
 
 @end
